@@ -1,0 +1,66 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <form [formGroup]="radnikForm" (ngSubmit)="submitForm()" novalidate>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header card-header-info">
+                            <h4 class="card-title">Radnik</h4>
+                            <p class="card-category" *ngIf="action_create">
+                                Novi unos
+                            </p>
+                            <p class="card-category" *ngIf="action_update">
+                                Izmena
+                            </p>
+                            <p class="card-category" *ngIf="action_delete">
+                                Brisanje
+                            </p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <mat-form-field class="example-full-width col-md-3">
+                                    <input matInput placeholder="Naziv" formControlName="naziv" [ngModel]="radnik.naziv" [readonly]="action_delete"/>
+                                    <mat-error *ngIf="radnikForm.get('naziv')?.errors?.serverError">
+                                        {{ radnikForm.get("naziv")?.errors ?.serverError }}
+                                    </mat-error>
+                                </mat-form-field>
+
+
+                                <mat-form-field class="example-full-width col-md-3">
+                                    <mat-select placeholder="Lokacija" formControlName="lokacija_id" [ngModel]="radnik.lokacija_id" [disabled]="action_delete" [errorStateMatcher]="matcher">
+                                        <mat-option>
+                                            <ngx-mat-select-search [formControl]="mestoFilterCtrl" placeholderLabel="Izaberite mesto...">
+                                                <span ngxMatSelectNoEntriesFound>
+                                                    No entries found
+                                                    <!-- <button mat-button color="primary">
+                                                      Add <mat-icon>add</mat-icon>
+                                                    </button> -->
+                                                    </span>
+                                            </ngx-mat-select-search>
+                                        </mat-option>
+                                        <mat-option *ngFor="let mesto of filteredBanks |async" [value]="mesto.id">{{mesto.naziv}}</mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="radnikForm.get('lokacija_id')?.errors?.serverError">
+                                        {{ radnikForm.get("lokacija_id")?.errors ?.serverError }}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <button mat-raised-button type="button" class="btn" (click)="goBack()">
+                                        Otkaži
+                                    </button>
+                                    <button mat-raised-button type="button" class="btn btn-danger" (click)="submitForm()">
+                                        Potvrdi
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
